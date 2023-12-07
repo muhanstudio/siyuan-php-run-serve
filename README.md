@@ -1,3 +1,4 @@
+> [教程地址](https://ld246.com/article/1701959780968)
 > You can now start/stop the PHP service environment in Siyuan to serve your PHP program in Siyuan
 > The web server uses nginx load balancing for stability and performance considerations
 > If you encounter download issues, you can also manually download the compressed file and unzip it to the env directory of the plugin: [download address]（ http://tool.muhan.studio/extensions.zip ）
