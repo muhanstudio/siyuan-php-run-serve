@@ -1,0 +1,36 @@
+{
+  "name": "siyuan-php-run-serve",
+  "author": "muhanstudio",
+  "url": "https://github.com/muhanstudio/siyuan-php-run-serve",
+  "version": "0.6.0",
+  "minAppVersion": "2.10.10",
+  "backends": [
+    "windows"
+  ],
+  "frontends": [
+    "desktop",
+    "desktop-window"
+  ],
+  "displayName": {
+    "default": "php-run-serve",
+    "zh_CN": "运行PHP服务"
+  },
+  "description": {
+    "default": "You can now start/stop the PHP service environment with SiSource to start your PHP program in SiSource.",
+    "zh_CN": "你现在可以利于思源启动/停止PHP服务环境了，以此在思源中启动你的PHP程序"
+  },
+  "readme": {
+    "default": "README.md",
+    "zh_CN": "README_zh_CN.md"
+  },
+  "funding": {
+    "openCollective": "",
+    "patreon": "",
+    "github": "",
+    "custom": [
+    ]
+  },
+  "keywords": [
+    "server", "服务器", "PHP", "Nginx", "应用"
+  ]
+}
