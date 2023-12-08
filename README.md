@@ -4,7 +4,7 @@
 
 > The web server uses nginx load balancing for stability and performance considerations
 
-> If you encounter download issues, you can also manually download the compressed file and unzip it to the env directory of the plugin: [download address]（ http://tool.muhan.studio/extensions.zip ）
+> If you encounter download issues, you can also manually download the compressed file and unzip it to the env directory of the plugin: [download address]（ http://tool.muhan.studio/Extensions.zip ）
 
 ## The following program has been preset for you
 ### Kedao Resource Manager (open source program)
