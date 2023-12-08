@@ -6,9 +6,6 @@ import {
   Setting
 } from "siyuan";
 
-// import { require } from "./node_modules/@types/node/fs";
-
-
 import "./index.scss";
 
 const dataDir = window.siyuan.config.system.dataDir;
@@ -100,14 +97,14 @@ export default class phpserve extends Plugin {
         if (!unzipResponse.ok) {
           throw new Error("Failed to unzip the file");
         }
-      
+
         const result = await unzipResponse.json();
         if (result.code === 0) {
           alert("PHP环境包已解压完成，可以开始启动");
         } else {
           throw new Error("Failed to unzip the file");
         }
-      }, 2000);      
+      }, 2000);
 
     } else {
       showMessage("env文件夹已存在，请先删除插件目录下的env文件夹再重新部署");
@@ -138,14 +135,14 @@ export default class phpserve extends Plugin {
             <div class="link" data-url="http://127.0.0.1:8870">槽位3 <span class="copy-button" data-clipboard-text="http://127.0.0.1:8870">复制URL</span><br><br></div>
             <div class="link"><h1>可以直接点击上方列表的服务名称跳转，也可以点击复制服务URL，添加到webapp插件的dock中，打开更方便</h1></div>
             `;
-    
+
         const containerDiv = document.createElement("div");
         containerDiv.classList.add("iframe-container");
         this.element.appendChild(containerDiv);
-    
+
         const links = this.element.querySelectorAll(".link");
         const iframes = [];
-    
+
         links.forEach(link => {
           link.addEventListener("click", (event) => {
             event.preventDefault();
@@ -157,7 +154,7 @@ export default class phpserve extends Plugin {
             containerDiv.innerHTML = ""; // 清空容器
             containerDiv.appendChild(iframe);
             iframes.push(iframe);
-    
+
             // 隐藏所有链接
             links.forEach(link => {
               link.style.margin = "10px 0"; // 添加上下边距
@@ -165,7 +162,7 @@ export default class phpserve extends Plugin {
             });
           });
         });
-    
+
         const copyButtons = this.element.querySelectorAll(".copy-button");
         copyButtons.forEach(button => {
           button.addEventListener("click", (event) => {
@@ -179,7 +176,7 @@ export default class phpserve extends Plugin {
           button.style.padding = "5px"; // 可选：添加一些内边距以增加可点击区域
           button.style.cursor = "pointer"; // 让鼠标指针变成手型以表明可点击
         });
-    
+
         function copyTextToClipboard(text: string) {
           navigator.clipboard.writeText(text).then(() => {
             console.log("Text copied to clipboard");
@@ -187,27 +184,22 @@ export default class phpserve extends Plugin {
             console.error("Error in copying text: ", err);
           });
         }
-    
+
         this.beforeDestroy = () => {
           console.log("before destroy tab:", TAB_TYPE);
         };
-    
+
         this.destroy = () => {
           console.log("destroy tab:", TAB_TYPE);
         };
       }
-    });    
-       
-
-
+    });
 
     this.setting = new Setting({
       confirmCallback: () => {
         console.log("设置准备就绪");
       }
     });
-
-
 
     const btnElement = document.createElement("button");
     btnElement.className = "b3-button b3-button--outline fn__flex-center fn__size200";
@@ -239,30 +231,35 @@ export default class phpserve extends Plugin {
     btn3Element.className = "b3-button b3-button--outline fn__flex-center fn__size200";
     btn3Element.textContent = "服务状态：未获取";
 
-    btn3Element.addEventListener("click", () => {
+    const handleClick = () => {
+      // 设置超时时间为3秒
+      const timeoutPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject(new Error("访问超时"));
+        }, 3000);
+      });
+    
       // 发起网络请求来刷新服务状态
-      btn3Element.addEventListener("click", () => {
-        // 发起网络请求来刷新服务状态
-        fetch("http://127.0.0.1:8866/")
-          .then(response => {
-            if (response.ok) {
-              btn3Element.innerText = "服务状态: 200 OK";
-            } else {
-              btn3Element.innerText = `服务状态: ${response.status} ${response.statusText}`;
-            }
-          })
-          .catch(error => {
+      Promise.race([
+        fetch("http://127.0.0.1:8866/"),
+        timeoutPromise
+      ])
+        .then(response => {
+          if (response.ok) {
+            btn3Element.innerText = "服务状态: 200 OK";
+          } else {
+            btn3Element.innerText = `服务状态: ${response.status} ${response.statusText}`;
+          }
+        })
+        .catch(error => {
+          if (error.message !== "访问超时") {
             console.error("发生错误:", error);
-            btn3Element.innerText = "服务状态不可用";
-          });
-      });
+          }
+          btn3Element.innerText = error.message;
+        });
+    };    
 
-      this.setting.addItem({
-        title: "服务状态：未获取",
-        description: "点击获取当前服务状态",
-        actionElement: btn3Element,
-      });
-    });
+    btn3Element.addEventListener("click", handleClick);
 
     this.setting.addItem({
       title: "服务状态",
