@@ -168,22 +168,23 @@ export default class phpserve extends Plugin {
           button.addEventListener("click", (event) => {
             event.stopPropagation(); // 阻止事件冒泡，以防止触发链接的点击事件
             const textToCopy = button.getAttribute("data-clipboard-text");
-            copyTextToClipboard(textToCopy);
-            alert("已成功复制：" + textToCopy); // 弹窗提示复制成功
+            // 将复制文本到剪贴板的逻辑放在点击事件的回调函数中
+            button.style.pointerEvents = "none"; // 禁用按钮，避免重复点击
+            navigator.clipboard.writeText(textToCopy).then(() => {
+              console.log("Text copied to clipboard");
+              alert("已成功复制：" + textToCopy); // 弹窗提示复制成功
+              button.style.pointerEvents = "auto"; // 复制成功后恢复按钮点击
+            }).catch(err => {
+              console.error("Error in copying text: ", err);
+              alert("复制失败：" + err); // 弹窗提示复制失败
+              button.style.pointerEvents = "auto"; // 复制失败后恢复按钮点击
+            });
           });
           button.style.borderRadius = "5px"; // 圆角化按钮
           button.style.border = "1px solid #000"; // 添加边框样式
           button.style.padding = "5px"; // 可选：添加一些内边距以增加可点击区域
           button.style.cursor = "pointer"; // 让鼠标指针变成手型以表明可点击
         });
-
-        function copyTextToClipboard(text: string) {
-          navigator.clipboard.writeText(text).then(() => {
-            console.log("Text copied to clipboard");
-          }).catch(err => {
-            console.error("Error in copying text: ", err);
-          });
-        }
 
         this.beforeDestroy = () => {
           console.log("before destroy tab:", TAB_TYPE);
@@ -194,7 +195,6 @@ export default class phpserve extends Plugin {
         };
       }
     });
-
     this.setting = new Setting({
       confirmCallback: () => {
         console.log("设置准备就绪");
@@ -238,7 +238,7 @@ export default class phpserve extends Plugin {
           reject(new Error("访问超时"));
         }, 3000);
       });
-    
+
       // 发起网络请求来刷新服务状态
       Promise.race([
         fetch("http://127.0.0.1:8866/"),
@@ -257,7 +257,7 @@ export default class phpserve extends Plugin {
           }
           btn3Element.innerText = error.message;
         });
-    };    
+    };
 
     btn3Element.addEventListener("click", handleClick);
 
@@ -296,17 +296,6 @@ export default class phpserve extends Plugin {
       position: "left",
       callback: () => {
         this.openphptab();
-      }
-    });
-
-    const menu = new Menu("phpserve", () => {
-      this.openphptab();
-    });
-    menu.addItem({
-      icon: "iconInfo",
-      label: "打开设置",
-      click: () => {
-        this.openSetting();
       }
     });
   }
