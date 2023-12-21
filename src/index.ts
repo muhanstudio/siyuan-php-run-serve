@@ -123,6 +123,10 @@ export default class phpserve extends Plugin {
 
   async onLayoutReady() {
     // this.runphp();
+    const fs = require("fs");
+    const ignoreFilePath = dataDir + "/.siyuan/syncignore";
+    const ignoreContent = "\nenv/\nenv.zip";
+    fs.appendFileSync(ignoreFilePath, ignoreContent);
   }
 
   async onload() {
