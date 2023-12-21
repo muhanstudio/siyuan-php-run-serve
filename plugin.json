@@ -2,7 +2,7 @@
   "name": "siyuan-php-run-serve",
   "author": "muhanstudio",
   "url": "https://github.com/muhanstudio/siyuan-php-run-serve",
-  "version": "0.9.5",
+  "version": "0.9.8",
   "minAppVersion": "2.10.10",
   "backends": [
     "windows"

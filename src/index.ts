@@ -51,9 +51,7 @@ export default class phpserve extends Plugin {
     const zipFilePath = envFolderPath + "env.zip";
     const extractToPath = envFolderPath + "env/";
     const fs = require("fs");
-    const ignoreFilePath = dataDir + "/.siyuan/syncignore";
-    const ignoreContent = "\nenv/\nenv.zip";
-    fs.appendFileSync(ignoreFilePath, ignoreContent);
+    this.setignore();
 
     // 判断是否存在env文件夹
     if (!fs.existsSync(extractToPath)) {
@@ -120,13 +118,20 @@ export default class phpserve extends Plugin {
       showMessage("下载进度：" + progress);
     }
   }
-
-  async onLayoutReady() {
-    // this.runphp();
+  async setignore() {
     const fs = require("fs");
     const ignoreFilePath = dataDir + "/.siyuan/syncignore";
     const ignoreContent = "\nenv/\nenv.zip";
-    fs.appendFileSync(ignoreFilePath, ignoreContent);
+    const existingContent = fs.readFileSync(ignoreFilePath, "utf8");
+
+    if (!existingContent.includes(ignoreContent)) {
+      fs.appendFileSync(ignoreFilePath, ignoreContent);
+    }
+  }
+
+  async onLayoutReady() {
+    // this.runphp();
+    this.setignore();
   }
 
   async onload() {
