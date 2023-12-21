@@ -17,7 +17,7 @@
   },
   "description": {
     "default": "You can now start/stop the PHP service environment with SiSource to start your PHP program in SiSource.",
-    "zh_CN": "你现在可以利于思源启动/停止PHP服务环境了，以此在思源中启动你的PHP程序"
+    "zh_CN": "你现在可以利于思源启动/停止PHP服务环境了，以此在思源中访问你的PHP程序，插件已基本稳定，可以放心下载安装"
   },
   "readme": {
     "default": "README.md",
