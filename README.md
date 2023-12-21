@@ -1,5 +1,7 @@
 > [教程地址](https://ld246.com/article/1701959780968)
 
+![更新日志](CHANGELOG.md)
+
 > You can now start/stop the PHP service environment in Siyuan to serve your PHP program in Siyuan
 
 > The web server uses nginx load balancing for stability and performance considerations
